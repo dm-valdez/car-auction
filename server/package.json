@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "migrate:latest": "dotenvx run -- knex migrate:latest",
+    "migrate:rollback": "dotenvx run -- knex migrate:rollback",
+    "migrate:seed": "dotenvx run -- knex seed:run"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^0.32.0",
+    "knex": "^3.1.0",
+    "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}
