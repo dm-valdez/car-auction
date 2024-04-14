@@ -24,4 +24,11 @@ exports.seed = async function (knex: Knex){
     await knex('bids').insert(BIDS)
     await knex('user_roles').insert(USER_ROLES)
     await knex('role_permissions').insert(ROLE_PERMISSIONS)
+
+    // Set the sequence values for the respective tables
+    await knex.raw('SELECT setval(\'users_id_seq\', (SELECT MAX(id) from "users"));')
+    await knex.raw('SELECT setval(\'roles_id_seq\', (SELECT MAX(id) from "roles"));')
+    await knex.raw('SELECT setval(\'permissions_id_seq\', (SELECT MAX(id) from "permissions"));')
+    await knex.raw('SELECT setval(\'auctions_id_seq\', (SELECT MAX(id) from "auctions"));')
+    await knex.raw('SELECT setval(\'bids_id_seq\', (SELECT MAX(id) from "bids"));')
 }
