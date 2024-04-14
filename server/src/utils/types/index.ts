@@ -55,3 +55,10 @@ export interface UserPermission {
     user_id: number;
     permission_id: number;
 }
+
+export interface NewBidRequest {
+    id: number;
+    user_id: number;
+    auction_id: number;
+    amount: number;
+}
