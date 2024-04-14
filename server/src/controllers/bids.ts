@@ -3,7 +3,6 @@ import { NewBidRequest } from "../utils/types"
 import { database } from "../utils/database"
 
 export const newBid = async (req: express.Request, res: express.Response) => {
-    console.info("ENTER BID!", req.body)
     try {
         const bidData: NewBidRequest = req.body
         const { user_id, auction_id, amount } = bidData
