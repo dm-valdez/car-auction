@@ -4,13 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "dotenvx run -- ts-node-dev src/index.ts",
     "migrate:latest": "dotenvx run -- knex migrate:latest",
     "migrate:rollback": "dotenvx run -- knex migrate:rollback",
     "migrate:seed": "dotenvx run -- knex seed:run"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^0.32.0",
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "knex": "^3.1.0",
     "pg": "^8.11.5"
