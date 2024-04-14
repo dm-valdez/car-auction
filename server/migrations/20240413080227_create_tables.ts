@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string('full_name', 255)
             table.string('email_address', 255)
             table.string('phone_number', 20)
+            table.string('password_salt', 255)
             table.string('password_hash', 255)
             table.boolean('is_admin').defaultTo(false)
         })

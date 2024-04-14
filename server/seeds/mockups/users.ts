@@ -4,6 +4,7 @@ export const USERS = [
         full_name: 'Richard Forrest',
         email_address: 'richard@example.com',
         phone_number: '1234567890',
+        password_salt: 'adminpassword',
         password_hash: 'adminpassword',
         is_admin: true
     },
@@ -12,6 +13,7 @@ export const USERS = [
         full_name: 'Addison Tyrell',
         email_address: 'addison@example.com',
         phone_number: '9876543210',
+        password_salt: 'userpassword1',
         password_hash: 'userpassword1',
         is_admin: false
     },
@@ -20,6 +22,7 @@ export const USERS = [
         full_name: 'Meg Perkins',
         email_address: 'meg@example.com',
         phone_number: '2547412589',
+        password_salt: 'userpassword2',
         password_hash: 'userpassword2',
         is_admin: false
     },
@@ -28,6 +31,7 @@ export const USERS = [
         full_name: 'Shae Harrison',
         email_address: 'shae@example.com',
         phone_number: '7852694253',
+        password_salt: 'userpassword3',
         password_hash: 'userpassword3',
         is_admin: false
     },
@@ -36,6 +40,7 @@ export const USERS = [
         full_name: 'Ron Matthews',
         email_address: 'ron@example.com',
         phone_number: '4895752169',
+        password_salt: 'userpassword4',
         password_hash: 'userpassword4',
         is_admin: false
     },

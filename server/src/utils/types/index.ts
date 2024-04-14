@@ -57,8 +57,15 @@ export interface UserPermission {
 }
 
 export interface NewBidRequest {
-    id: number;
     user_id: number;
     auction_id: number;
     amount: number;
+}
+
+export interface RegisterRequest {
+    fullName: string;
+    emailAddress: string;
+    phoneNumber: string;
+    password: string;
+    isAdmin?: boolean;
 }
