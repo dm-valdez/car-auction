@@ -26,8 +26,8 @@ export const TableBody = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export const TableBodyElement = ({ children }: { children: React.ReactNode }) => {
-  return <tr className={'border-t border-slate-700 align-top cursor-pointer hover:bg-option-2'}>{children}</tr>
+export const TableBodyElement = ({ children, className, onRowClick }: { children: React.ReactNode, className?: string, onRowClick?: () => void }) => {
+  return <tr className={`border-t border-slate-700 align-top ${className}`} onClick={onRowClick}>{children}</tr>
 }
 
 export const TableBodyCells = ({ children, className }: { children: React.ReactNode, className?: string }) => {
