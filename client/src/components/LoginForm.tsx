@@ -6,6 +6,7 @@ import { validateFields } from '../lib/utils.ts'
 import useLogin from '../hooks/useLogin.ts'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 export default function LoginForm() {
   const [ formData, setFormData ] = useState<{ emailAddress: string, password: string }>({
@@ -33,7 +34,6 @@ export default function LoginForm() {
         value: formData.password,
         rules: [
           { type: 'required', message: 'Password is required.' },
-          { type: 'minLength', message: 'Password must be at least 6 characters longs.', minLength: 6 },
         ],
       },
     })
@@ -45,6 +45,7 @@ export default function LoginForm() {
 
     await login.mutateAsync(formData)
     await queryClient.invalidateQueries({ queryKey: [ 'user-auth-status' ] })
+    toast.success('Login Successful!')
     navigate('/auctions')
   }
 
@@ -56,7 +57,6 @@ export default function LoginForm() {
     }))
     setErrors({ ...errors, [name]: '' })
   }
-
 
   return (
     <Card>

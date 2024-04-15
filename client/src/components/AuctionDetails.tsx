@@ -62,14 +62,6 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
       return
     }
 
-    // Check if there are bids with the same amount
-    const hasSameBid = auctionBids.some((bid: any) => bid.amount === Number(amount))
-
-    if (hasSameBid) {
-      console.info(`Sorry, somebody has bid quicker with this price. Please check the new price.`)
-      return
-    }
-
     await newBid.mutateAsync({
       user_id: selectedAuction.user_id,
       auction_id: selectedAuction.id,

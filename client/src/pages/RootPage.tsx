@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom'
 import useAuthStatus from '../hooks/useAuthStatus.ts'
 import useLogout from '../hooks/useLogout.ts'
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 export default function RootPage() {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ export default function RootPage() {
   const handleLogout = async () => {
     await logout.mutateAsync()
     await queryClient.invalidateQueries({ queryKey: [ 'user-auth-status' ] })
+    toast.success('Logout Successful!')
     navigate('/')
   }
 

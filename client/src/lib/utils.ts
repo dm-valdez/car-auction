@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { FieldConfig } from './types.ts'
+import { toast } from 'react-toastify'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -77,4 +78,12 @@ export function formatNumber(number: string | number) {
   }
 
   return formattedNumber
+}
+
+export function showErrorToast(error: any) {
+  const errorMessage = `Failed with status code ${error.status} and message of ${error.response.data.message}`
+
+  console.error(errorMessage)
+
+  toast.error(error.response.data.error)
 }

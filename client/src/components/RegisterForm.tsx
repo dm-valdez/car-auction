@@ -4,6 +4,7 @@ import Card from './shared/Card.tsx'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { validateFields } from '../lib/utils.ts'
 import useRegister from '../hooks/useRegister.ts'
+import { toast } from 'react-toastify'
 
 type RegisterFormPropType = {
   setLoginForm: (value: boolean) => void
@@ -62,6 +63,7 @@ export default function RegisterForm({ setLoginForm }: RegisterFormPropType) {
         value: formData.phoneNumber,
         rules: [
           { type: 'required', message: 'Phone number is required.' },
+          { type: 'numeric', message: 'Phone number should be a number.' },
         ],
       },
     })
@@ -72,6 +74,8 @@ export default function RegisterForm({ setLoginForm }: RegisterFormPropType) {
     }
 
     await register.mutateAsync(formData)
+
+    toast.success('All Set! Registration Successful!')
 
     handleClearForm()
     setLoginForm(true)
