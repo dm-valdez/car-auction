@@ -52,3 +52,13 @@ export function validateFields(fields: { [key: string]: FieldConfig }): { [key: 
   })
   return errors
 }
+
+export function formatNumber(number: string | number) {
+  let formattedNumber = number.toString()
+
+  if (formattedNumber.includes('.00')) {
+    formattedNumber = formattedNumber.replace('.00', '')
+  }
+
+  return formattedNumber
+}
