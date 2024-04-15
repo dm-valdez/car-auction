@@ -3,23 +3,35 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header.tsx'
 import { Outlet } from 'react-router-dom'
 import useAuthStatus from '../hooks/useAuthStatus.ts'
+import useLogout from '../hooks/useLogout.ts'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function RootPage() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { data } = useAuthStatus()
+  const logout = useLogout()
+
+  console.info(data)
+
+  const handleLogout = async () => {
+    await logout.mutateAsync()
+    await queryClient.invalidateQueries({ queryKey: [ 'user-auth-status' ] })
+    navigate('/')
+  }
 
   useEffect(() => {
     if (data && data.isLoggedIn) {
       console.info(data.isLoggedIn)
       navigate('/auctions')
-    } else {
+    } else if (data && !data.isLoggedIn) {
       navigate('/')
     }
-  }, [data, navigate])
+  }, [ data, navigate ])
 
   return (
     <React.Fragment>
-      <Header />
+      <Header authStatus={data} logout={handleLogout} />
       <Outlet />
     </React.Fragment>
   )

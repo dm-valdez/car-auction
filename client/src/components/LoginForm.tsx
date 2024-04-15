@@ -5,6 +5,7 @@ import { useState, FormEvent, ChangeEvent } from 'react'
 import { validateFields } from '../lib/utils.ts'
 import useLogin from '../hooks/useLogin.ts'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function LoginForm() {
   const [ formData, setFormData ] = useState<{ emailAddress: string, password: string }>({
@@ -13,6 +14,7 @@ export default function LoginForm() {
   })
   const [ errors, setErrors ] = useState<{ [key: string]: string }>({})
 
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const login = useLogin()
 
@@ -42,6 +44,7 @@ export default function LoginForm() {
     }
 
     await login.mutateAsync(formData)
+    await queryClient.invalidateQueries({ queryKey: [ 'user-auth-status' ] })
     navigate('/auctions')
   }
 
