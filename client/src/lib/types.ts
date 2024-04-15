@@ -18,6 +18,20 @@ export interface User {
   is_admin: boolean
 }
 
+export interface Auction {
+  id: number
+  car_brand: string
+  year: number
+  type: string
+  opening_price: number
+  price_increment: number
+  expiry_date: Date
+  status?: string
+  user_id: number
+  created_at: Date
+  updated_at: Date
+}
+
 export interface LoginRequest {
   emailAddress: string
   password: string

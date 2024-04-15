@@ -12,8 +12,6 @@ export default function RootPage() {
   const { data } = useAuthStatus()
   const logout = useLogout()
 
-  console.info(data)
-
   const handleLogout = async () => {
     await logout.mutateAsync()
     await queryClient.invalidateQueries({ queryKey: [ 'user-auth-status' ] })
@@ -22,7 +20,6 @@ export default function RootPage() {
 
   useEffect(() => {
     if (data && data.isLoggedIn) {
-      console.info(data.isLoggedIn)
       navigate('/auctions')
     } else if (data && !data.isLoggedIn) {
       navigate('/')
