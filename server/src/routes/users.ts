@@ -1,11 +1,13 @@
-import express from "express"
-import {login, logout, register} from "../controllers/users"
+import express from 'express'
+import { checkUserAuth, login, logout, register } from '../controllers/users'
 
 const router = express.Router()
 
 router.route('/register').post(register)
 
-router.route('/login').post(login)
+router.route('/login')
+  .get(checkUserAuth)
+  .post(login)
 
 router.route('/logout').get(logout)
 
