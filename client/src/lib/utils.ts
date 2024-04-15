@@ -44,6 +44,22 @@ export function validateFields(fields: { [key: string]: FieldConfig }): { [key: 
             }
           }
           break
+        case 'numeric':
+          if (value.trim() && isNaN(Number(value))) {
+            errors[fieldName] = rule.message
+          }
+          break
+        case 'date':
+          const currentDate = new Date();
+          const selectedDate = new Date(value);
+          const oneDayAhead = new Date(currentDate);
+          oneDayAhead.setDate(currentDate.getDate() + 1);
+
+          if (selectedDate <= oneDayAhead) {
+            errors[fieldName] = rule.message;
+          }
+          break
+
         // Add more validation rules as needed
         default:
           break
