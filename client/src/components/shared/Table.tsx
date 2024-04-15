@@ -15,7 +15,7 @@ export const TableHead = ({ children }: { children: React.ReactNode }) => {
 }
 
 export const TableHeadCell = ({ cellName, width }: { cellName: string, width: number }) => {
-  return <th className={`py-3 pr-3 w-[${width}%]`}>{cellName}</th>
+  return <th className={`py-3 pr-3 pl-2 w-[${width}%]`}>{cellName}</th>
 }
 
 export const TableBody = ({ children }: { children: React.ReactNode }) => {
@@ -27,9 +27,9 @@ export const TableBody = ({ children }: { children: React.ReactNode }) => {
 }
 
 export const TableBodyElement = ({ children }: { children: React.ReactNode }) => {
-  return <tr className={'border-t border-slate-700 align-top'}>{children}</tr>
+  return <tr className={'border-t border-slate-700 align-top cursor-pointer hover:bg-option-2'}>{children}</tr>
 }
 
 export const TableBodyCells = ({ children, className }: { children: React.ReactNode, className?: string }) => {
-  return <td className={`py-3 pr-3 text-sm ${className ? className : 'text-option-3'}`}>{children}</td>
+  return <td className={`py-3 pr-3 pl-2 text-sm ${className ? className : 'text-option-3'}`}>{children}</td>
 }
