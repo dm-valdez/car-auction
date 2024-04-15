@@ -35,6 +35,15 @@ export function validateFields(fields: { [key: string]: FieldConfig }): { [key: 
             errors[fieldName] = rule.message
           }
           break
+        case 'matchField':
+          const matchFieldName = rule.fieldName
+          if (matchFieldName && fields[matchFieldName]) {
+            const matchValue = fields[matchFieldName].value
+            if (value !== matchValue) {
+              errors[fieldName] = rule.message
+            }
+          }
+          break
         // Add more validation rules as needed
         default:
           break

@@ -8,7 +8,7 @@ export default function HomePage() {
 
   return (
     <main className={'flex flex-col justify-center items-center py-28'}>
-      {loginForm ? <LoginForm /> : <RegisterForm />}
+      {loginForm ? <LoginForm /> : <RegisterForm setLoginForm={setLoginForm} />}
       <div className={'flex gap-x-2'}>
         <p className={'text-option-2 text-sm font-medium my-3'}>
           {loginForm ? 'New member?' : 'Already have an account?'}

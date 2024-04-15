@@ -13,6 +13,11 @@ export const register = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ error: 'All fields are required.' })
     }
 
+    const existingUser = await database('users').where({ email_address: emailAddress }).first()
+    if (existingUser) {
+      return res.status(409).json({ error: 'Email address already exists.' })
+    }
+
     const salt = randomBytes(16).toString('hex')
 
     const hashedPassword = await generatePasswordHash(password, salt)
@@ -25,7 +30,7 @@ export const register = async (req: express.Request, res: express.Response) => {
       password_salt: salt,
     })
 
-    res.status(201).json({ message: 'User created successfully.' })
+    res.status(200).json({ message: 'User created successfully.' })
   } catch (error) {
     console.error('Error creating user:', error)
     res.status(500).json({ error: 'Failed to create user.' })
@@ -35,7 +40,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 export const login = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     if (req.isAuthenticated()) {
-      return res.json({ message: "Already logged in.", user: req.isAuthenticated() })
+      return res.json({ message: 'Already logged in.', user: req.isAuthenticated() })
     }
 
     passport.authenticate('local', (err: Error | null, user: User | boolean, info: { message: string }) => {
