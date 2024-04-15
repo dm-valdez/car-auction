@@ -4,15 +4,17 @@ import { cn } from '../../lib/utils.ts'
 type InputPropType = {
   placeholder: string
   type: string
+  name?: string
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function Input({ placeholder, type, value, onChange }: InputPropType) {
+export default function Input({ placeholder, type, value, onChange, name }: InputPropType) {
   return (
     <input
       placeholder={placeholder}
       type={type}
+      name={name}
       value={value}
       onChange={onChange}
       className={cn([
