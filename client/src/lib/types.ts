@@ -17,3 +17,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   message: string
 }
+
+export interface GetUserAuthStatusResponse {
+  isLoggedIn: boolean
+}
