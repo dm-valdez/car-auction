@@ -4,7 +4,7 @@ export interface FieldConfig {
 }
 
 export interface ValidationRule {
-  type: 'required' | 'email' | 'minLength' | 'matchField'
+  type: 'required' | 'email' | 'minLength' | 'matchField' | 'numeric' | 'date'
   message: string
   minLength?: number
   fieldName?: string
@@ -32,9 +32,35 @@ export interface Auction {
   updated_at: Date
 }
 
+export interface Bid {
+  id: number
+  amount: number
+  auction_id: string
+  user_id: number
+  created_at: Date
+  updated_at: Date
+}
+
 export interface LoginRequest {
   emailAddress: string
   password: string
+}
+
+export interface NewAuctionRequest {
+  carBrand: string
+  type: string
+  year: string
+  openingPrice: string
+  priceIncrement: string
+  expirationDate: string
+  userId?: number
+  status?: string
+}
+
+export interface NewBidRequest {
+  user_id: number
+  auction_id: number
+  amount: number
 }
 
 export interface LoginResponse {
