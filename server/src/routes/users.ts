@@ -1,7 +1,9 @@
 import express from 'express'
-import { checkUserAuth, login, logout, register } from '../controllers/users'
+import { checkUserAuth, getUser, login, logout, register } from '../controllers/users'
 
 const router = express.Router()
+
+router.route('/user/:id').get(getUser)
 
 router.route('/register').post(register)
 

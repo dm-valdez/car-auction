@@ -5,6 +5,23 @@ import { randomBytes } from 'node:crypto'
 import { generatePasswordHash } from '../utils/generatePasswordHash'
 import passport from 'passport'
 
+export const getUser = async (req: express.Request, res: express.Response) => {
+  try {
+    const { id } = req.params
+
+    const user = await database('users').where('id', id).first()
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found!' })
+    }
+
+    res.status(200).json({ user })
+  } catch (error) {
+    console.error('Failed to fetch user:', error)
+    res.status(500).json({ error: 'Failed to fetch user' })
+  }
+}
+
 export const register = async (req: express.Request, res: express.Response) => {
   try {
     const { fullName, emailAddress, phoneNumber, password }: RegisterRequest = req.body
