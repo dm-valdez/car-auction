@@ -51,13 +51,13 @@ export function validateFields(fields: { [key: string]: FieldConfig }): { [key: 
           }
           break
         case 'date':
-          const currentDate = new Date();
-          const selectedDate = new Date(value);
-          const oneDayAhead = new Date(currentDate);
-          oneDayAhead.setDate(currentDate.getDate() + 1);
+          const currentDate = new Date()
+          const selectedDate = new Date(value)
+          const oneDayAhead = new Date(currentDate)
+          oneDayAhead.setDate(currentDate.getDate() + 1)
 
           if (selectedDate <= oneDayAhead) {
-            errors[fieldName] = rule.message;
+            errors[fieldName] = rule.message
           }
           break
 
@@ -78,6 +78,16 @@ export function formatNumber(number: string | number) {
   }
 
   return formattedNumber
+}
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+
+  const year = date.getFullYear()
+  const month = ('0' + (date.getMonth() + 1)).slice(-2)
+  const day = ('0' + date.getDate()).slice(-2)
+
+  return `${year}-${month}-${day}`
 }
 
 export function showErrorToast(error: any) {

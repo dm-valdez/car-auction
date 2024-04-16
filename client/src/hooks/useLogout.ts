@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useAxiosWithAuth } from './useAxiosWithAuth.ts'
+import { showErrorToast } from '../lib/utils.ts'
 
 export default function useLogout() {
   const axiosInstance = useAxiosWithAuth()
@@ -15,5 +16,6 @@ export default function useLogout() {
 
       return response.data
     },
+    onError: showErrorToast
   })
 }

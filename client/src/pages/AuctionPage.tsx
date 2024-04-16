@@ -23,7 +23,7 @@ export default function AuctionPage() {
 
   return (
     <main className="flex justify-center">
-      <div className={'py-16 px-96 w-full'}>
+      <div className={'py-16 px-2 w-full md:px-24 lg:px-64 xl:px-96'}>
         <div className={'flex justify-between'}>
           <h1 className={'text-4xl text-option-3 font-bold tracking-tight'}>Auction Lists</h1>
           <Button title={'NEW AUCTION'} className={'w-fit py-2 px-8 my-0 text-sm'} onClick={handleNewAuctionDialogOpen}/>

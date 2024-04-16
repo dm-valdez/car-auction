@@ -11,6 +11,7 @@ import useAuthStatus from '../hooks/useAuthStatus.ts'
 import useGetUser from '../hooks/useGetUser.ts'
 import useDeleteAuction from '../hooks/useDeleteAuction.ts'
 import { toast } from 'react-toastify'
+import useUpdateAuction from '../hooks/useUpdateAuction.ts'
 
 type AuctionDetailsPropType = {
   isDialogOpen: boolean
@@ -29,6 +30,7 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
   const { data: auctionBids } = useAuctionBids(selectedAuction && selectedAuction.id)
   const deleteAuction = useDeleteAuction()
   const newBid = useNewBid()
+  const transferAuction = useUpdateAuction()
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -63,15 +65,38 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
       return
     }
 
-    await newBid.mutateAsync({
-      user_id: selectedAuction.user_id,
-      auction_id: selectedAuction.id,
-      amount: Number(amount),
-    })
-    await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
-    toast.success('Bid successful! Thank you!')
-    setAmount('')
-    setErrors({})
+    const expirationDate = new Date(selectedAuction.expiry_date)
+    const today = new Date()
+
+
+    if (expirationDate <= today) {
+      if (!authResponse) throw new Error('No auth response!')
+
+      await transferAuction.mutateAsync({
+        id: selectedAuction.id,
+        user_id: authResponse.user.id,
+      })
+      await newBid.mutateAsync({
+        user_id: authResponse.user.id,
+        auction_id: selectedAuction.id,
+        amount: Number(amount),
+      })
+      await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
+
+      toast.success('Congratulations! You have won the bid!')
+      setAmount('')
+      setErrors({})
+    } else {
+      await newBid.mutateAsync({
+        user_id: selectedAuction.user_id,
+        auction_id: selectedAuction.id,
+        amount: Number(amount),
+      })
+      await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
+      toast.success('Bid successful! Thank you!')
+      setAmount('')
+      setErrors({})
+    }
   }
 
   const handleDeleteAuction = async () => {
@@ -118,6 +143,8 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
                 <p className={'font-bold'}>Price Increment: <span
                   className={'font-normal'}>&#36;{selectedAuction.price_increment}</span></p>
                 <p className={'font-bold'}>Status: <span className={'font-normal'}>{selectedAuction.status}</span></p>
+                <p className={'font-bold'}>Status: <span
+                  className={'font-normal'}>{selectedAuction.expiry_date.toString()}</span></p>
                 {
                   auctionBids && auctionBids.length > 0 ? (
                     <p className={'text-lg font-bold mt-5'}>Highest Bid: <span
@@ -129,7 +156,7 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
           )
         }
         {
-          authResponse && selectedAuction && (authResponse.user.id !== selectedAuction?.id) && (
+          authResponse && selectedAuction && (authResponse.user.id !== selectedAuction.user_id) && (
             <form onSubmit={handleSubmit}>
               <DialogFooter>
                 {

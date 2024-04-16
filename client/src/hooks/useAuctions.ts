@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAxiosWithAuth } from './useAxiosWithAuth.ts'
-import { formatNumber } from '../lib/utils.ts'
+import { formatDate, formatNumber } from '../lib/utils.ts'
 import { Auction } from '../lib/types.ts'
 
 export default function useAuctions() {
@@ -15,11 +15,14 @@ export default function useAuctions() {
         throw new Error('Failed to fetch auctions.')
       }
 
-      return  response.data.map((auction: Auction) => ({
-        ...auction,
-        opening_price: formatNumber(auction.opening_price),
-        price_increment: formatNumber(auction.price_increment),
-      }))
+      return response.data.map((auction: Auction) => {
+        return {
+          ...auction,
+          expiry_date: formatDate(auction.expiry_date.toString()),
+          opening_price: formatNumber(auction.opening_price),
+          price_increment: formatNumber(auction.price_increment),
+        }
+      })
     },
   })
 }

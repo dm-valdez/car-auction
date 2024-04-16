@@ -33,6 +33,25 @@ export const newBid = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ error: 'UserID, AuctionID, and Amount are required' })
     }
 
+    const existingBids = await database('bids')
+      .where('auction_id', auction_id)
+      .where('amount', amount)
+      .count('id as count')
+      .first()
+
+    if (existingBids && Number(existingBids.count) > 0) {
+      return res.status(400).json({ error: 'Sorry, somebody has bid quicker with this price. Please check the new price.' })
+    }
+
+    const highestBid = await database('bids')
+      .where('auction_id', auction_id)
+      .max('amount as highest')
+      .first()
+
+    if (highestBid && highestBid.highest && amount <= highestBid.highest) {
+      return res.status(400).json({ error: 'Sorry, somebody has bid quicker with this price. Please check the new price.' })
+    }
+
     await database('bids').insert(bidData)
 
     res.status(200).send('Bid created successfully.')

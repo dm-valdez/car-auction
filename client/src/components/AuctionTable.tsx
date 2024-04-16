@@ -16,6 +16,7 @@ export default function AuctionTable({ auctions, onRowClick }: AuctionTablePropT
         <TableHeadCell cellName={'Opening Price'} width={16.5} />
         <TableHeadCell cellName={'Price Increment'} width={16.5} />
         <TableHeadCell cellName={'Status'} width={16.5} />
+        <TableHeadCell cellName={'Expired Date'} width={16.5} />
       </TableHead>
       <TableBody>
         {
@@ -32,6 +33,7 @@ export default function AuctionTable({ auctions, onRowClick }: AuctionTablePropT
                 <TableBodyCells>&#36;{auction.opening_price}</TableBodyCells>
                 <TableBodyCells>&#36;{auction.price_increment}</TableBodyCells>
                 <TableBodyCells>{auction.status}</TableBodyCells>
+                <TableBodyCells>{auction.expiry_date.toString()}</TableBodyCells>
               </TableBodyElement>
             )
           })

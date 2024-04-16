@@ -7,17 +7,6 @@ export interface User {
   is_admin: boolean;
 }
 
-export interface Role {
-  id: number;
-  name: string;
-}
-
-export interface Permission {
-  id: number;
-  name: string;
-  description: string;
-}
-
 export interface Auction {
   id: number;
   car_brand: string;
@@ -30,30 +19,6 @@ export interface Auction {
   user_id: number;
   created_at: Date;
   updated_at: Date;
-}
-
-export interface Bid {
-  id: number;
-  user_id: number;
-  auction_id: number;
-  amount: number;
-  created_at: Date;
-  updated_at: Date;
-}
-
-export interface UserRole {
-  user_id: number;
-  role_id: number;
-}
-
-export interface RolePermission {
-  role_id: number;
-  permission_id: number;
-}
-
-export interface UserPermission {
-  user_id: number;
-  permission_id: number;
 }
 
 export interface NewBidRequest {

@@ -1,15 +1,14 @@
 import { useMutation } from '@tanstack/react-query'
-import { NewBidRequest } from '../lib/types.ts'
 import { useAxiosWithAuth } from './useAxiosWithAuth.ts'
 import { showErrorToast } from '../lib/utils.ts'
 
-export default function useNewBid() {
+export default function useUpdateAuction() {
   const axiosInstance = useAxiosWithAuth()
 
   return useMutation({
-    mutationKey: [ 'new-bid' ],
-    mutationFn: async (data: NewBidRequest) => {
-      const response = await axiosInstance.post('/bids/new', data)
+    mutationKey: [ 'update-auction' ],
+    mutationFn: async (data: any) => {
+      const response = await axiosInstance.put(`/auctions/${data.id}`, data)
 
       if (response.status !== 200) {
         throw new Error('Failed to create new bid.')
