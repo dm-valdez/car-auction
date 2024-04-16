@@ -7,6 +7,7 @@ import { NewAuctionRequest } from '../lib/types.ts'
 import useNewAuction from '../hooks/useNewAuction.ts'
 import useAuthStatus from '../hooks/useAuthStatus.ts'
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 type AuctionDetailsPropType = {
   isDialogOpen: boolean
@@ -84,6 +85,7 @@ export default function NewAuction({ isDialogOpen, setIsDialogOpen }: AuctionDet
     })
 
     await queryClient.invalidateQueries({ queryKey: [ 'auctions' ] })
+    toast.success('Auction created successfully!')
     setFormData(initialFormData)
     setErrors({})
   }

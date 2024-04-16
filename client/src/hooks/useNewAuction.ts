@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { NewAuctionRequest } from '../lib/types.ts'
 import { useAxiosWithAuth } from './useAxiosWithAuth.ts'
+import { showErrorToast } from '../lib/utils.ts'
 
 export default function useNewAuction() {
   const axiosInstance = useAxiosWithAuth()
@@ -16,5 +17,6 @@ export default function useNewAuction() {
 
       return response.data
     },
+    onError: showErrorToast
   })
 }

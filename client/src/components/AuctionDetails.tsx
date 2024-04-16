@@ -10,6 +10,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import useAuthStatus from '../hooks/useAuthStatus.ts'
 import useGetUser from '../hooks/useGetUser.ts'
 import useDeleteAuction from '../hooks/useDeleteAuction.ts'
+import { toast } from 'react-toastify'
 
 type AuctionDetailsPropType = {
   isDialogOpen: boolean
@@ -58,7 +59,7 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
     }
 
     if (amount <= highestBid) {
-      console.info(`The minimum bid should be ${Number(priceIncrement) + Number(highestBid)}`)
+      toast.error(`Minimum bid should be $${Number(priceIncrement) + Number(highestBid)}`)
       return
     }
 
@@ -68,6 +69,7 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
       amount: Number(amount),
     })
     await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
+    toast.success('Bid successful! Thank you!')
     setAmount('')
     setErrors({})
   }
@@ -75,6 +77,7 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
   const handleDeleteAuction = async () => {
     await deleteAuction.mutateAsync(selectedAuction && selectedAuction.id)
     await queryClient.invalidateQueries({ queryKey: [ `auctions` ] })
+    toast.success('Auction deleted successfully.')
     setIsDialogOpen(false)
   }
 
