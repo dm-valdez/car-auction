@@ -34,15 +34,18 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!selectedAuction) throw new Error('No auction found.')
+
+    if (!selectedAuction) {
+      throw new Error('No auction found.')
+    }
 
     const validationErrors = validateFields({
       amount: {
         value: amount,
-        rules: [
-          { type: 'required', message: 'Amount is required.' },
-          { type: 'numeric', message: 'Amount should be a number.' },
-        ],
+        rules: [ { type: 'required', message: 'Amount is required.' }, {
+          type: 'numeric',
+          message: 'Amount should be a number.',
+        } ],
       },
     })
 
@@ -51,52 +54,69 @@ export default function AuctionDetails({ isDialogOpen, setIsDialogOpen, selected
       return
     }
 
-    const priceIncrement = selectedAuction.price_increment
-    let highestBid
+    const priceIncrement = Number(selectedAuction.price_increment)
+    const highestBid = Number(getHighestBid())
 
-    if (auctionBids && auctionBids.length > 0) {
-      highestBid = auctionBids[0].amount
-    } else {
-      highestBid = selectedAuction.opening_price
-    }
-
-    if (amount <= highestBid) {
-      toast.error(`Minimum bid should be $${Number(priceIncrement) + Number(highestBid)}`)
+    if (Number(amount) < (Number(priceIncrement) + Number(highestBid))) {
+      toast.error(`Minimum bid should be $${priceIncrement + highestBid}`)
       return
     }
 
     const expirationDate = new Date(selectedAuction.expiry_date)
     const today = new Date()
 
-
     if (expirationDate <= today) {
-      if (!authResponse) throw new Error('No auth response!')
-
-      await transferAuction.mutateAsync({
-        id: selectedAuction.id,
-        user_id: authResponse.user.id,
-      })
-      await newBid.mutateAsync({
-        user_id: authResponse.user.id,
-        auction_id: selectedAuction.id,
-        amount: Number(amount),
-      })
-      await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
-
-      toast.success('Congratulations! You have won the bid!')
-      setAmount('')
-      setErrors({})
+      await handleExpiredAuction()
     } else {
-      await newBid.mutateAsync({
-        user_id: selectedAuction.user_id,
-        auction_id: selectedAuction.id,
-        amount: Number(amount),
-      })
-      await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
-      toast.success('Bid successful! Thank you!')
-      setAmount('')
-      setErrors({})
+      await handleActiveAuction()
     }
+
+    resetForm()
+  }
+
+  const getHighestBid = () => {
+    if (!selectedAuction) {
+      throw new Error('No auction found.')
+    }
+    return auctionBids && auctionBids.length > 0 ? auctionBids[0].amount : selectedAuction.opening_price
+  }
+
+  const handleExpiredAuction = async () => {
+    if (!authResponse) {
+      throw new Error('No auth response!')
+    }
+
+    if (!selectedAuction) {
+      throw new Error('No auction found.')
+    }
+
+
+    await transferAuction.mutateAsync({ id: selectedAuction.id, user_id: authResponse.user.id })
+    await newBid.mutateAsync({ user_id: authResponse.user.id, auction_id: selectedAuction.id, amount: Number(amount) })
+
+    await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
+
+    toast.success('Congratulations! You have won the bid!')
+  }
+
+  const handleActiveAuction = async () => {
+    if (!selectedAuction) {
+      throw new Error('No auction found.')
+    }
+
+    await newBid.mutateAsync({
+      user_id: selectedAuction.user_id,
+      auction_id: selectedAuction.id,
+      amount: Number(amount),
+    })
+    await queryClient.invalidateQueries({ queryKey: [ `auction-bid-${selectedAuction.id}` ] })
+
+    toast.success('Bid successful! Thank you!')
+  }
+
+  const resetForm = () => {
+    setAmount('')
+    setErrors({})
   }
 
   const handleDeleteAuction = async () => {
