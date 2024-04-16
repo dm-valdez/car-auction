@@ -4,8 +4,8 @@ import { randomBytes } from 'node:crypto'
 export const USERS = [
   {
     id: 1,
-    full_name: 'Richard Forrest',
-    email_address: 'richard@example.com',
+    full_name: 'Administrator',
+    email_address: 'admin@example.com',
     phone_number: '1234567890',
     password_salt: 'adminpassword',
     password_hash: 'adminpassword',
